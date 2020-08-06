@@ -70,7 +70,7 @@ class TheActivity : AppCompatActivity() {
     fun intentForOpenPatientSummary(
         context: Context,
         patientUuid: UUID,
-        user: User? = null
+        user: User?
     ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -81,7 +81,7 @@ class TheActivity : AppCompatActivity() {
 
     fun intentForShowPatientNotFoundError(
         context: Context,
-        user: User? = null
+        user: User?
     ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -92,7 +92,7 @@ class TheActivity : AppCompatActivity() {
 
     fun intentForShowNoPatientUuidError(
         context: Context,
-        user: User? = null
+        user: User?
     ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

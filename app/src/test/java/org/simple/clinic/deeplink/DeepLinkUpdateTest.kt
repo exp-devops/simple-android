@@ -1,6 +1,7 @@
 package org.simple.clinic.deeplink
 
 import com.spotify.mobius.test.NextMatchers.hasEffects
+import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
@@ -37,8 +38,8 @@ class DeepLinkUpdateTest {
         .given(defaultModel)
         .whenEvent(UserFetched(user))
         .then(assertThatNext(
-            hasNoModel(),
-            hasEffects(ShowNoPatientUuidError as DeepLinkEffect)
+            hasModel(defaultModel.userFetched(user)),
+            hasEffects(ShowNoPatientUuidError(user) as DeepLinkEffect)
         ))
   }
 
@@ -70,7 +71,7 @@ class DeepLinkUpdateTest {
         .given(model)
         .whenEvent(UserFetched(user))
         .then(assertThatNext(
-            hasNoModel(),
+            hasModel(model.userFetched(user)),
             hasEffects(FetchPatient(patientUuid) as DeepLinkEffect)
         ))
   }
@@ -80,24 +81,35 @@ class DeepLinkUpdateTest {
     val patient = TestData.patient(
         uuid = patientUuid
     )
+    val user = TestData.loggedInUser(
+        uuid = UUID.fromString("fa0dfb7b-a0ea-425a-987d-2056f1a9e93b"),
+        loggedInStatus = User.LoggedInStatus.LOGGED_IN
+    )
+    val model = defaultModel.userFetched(user)
 
     updateSpec
-        .given(defaultModel)
+        .given(model)
         .whenEvent(PatientFetched(patient))
         .then(assertThatNext(
             hasNoModel(),
-            hasEffects(NavigateToPatientSummary(patientUuid) as DeepLinkEffect)
+            hasEffects(NavigateToPatientSummary(patientUuid, user) as DeepLinkEffect)
         ))
   }
 
   @Test
   fun `if patient does not exist, then show patient does not exist`() {
+    val user = TestData.loggedInUser(
+        uuid = UUID.fromString("fa0dfb7b-a0ea-425a-987d-2056f1a9e93b"),
+        loggedInStatus = User.LoggedInStatus.LOGGED_IN
+    )
+    val model = defaultModel.userFetched(user)
+
     updateSpec
-        .given(defaultModel)
+        .given(model)
         .whenEvent(PatientFetched(null))
         .then(assertThatNext(
             hasNoModel(),
-            hasEffects(ShowPatientDoesNotExist as DeepLinkEffect)
+            hasEffects(ShowPatientDoesNotExist(user) as DeepLinkEffect)
         ))
   }
 }

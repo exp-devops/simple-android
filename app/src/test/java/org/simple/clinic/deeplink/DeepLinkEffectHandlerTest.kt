@@ -38,9 +38,7 @@ class DeepLinkEffectHandlerTest {
   @Test
   fun `when fetch user effect is received, then fetch the user`() {
     // given
-    val user = TestData.loggedInUser(
-        uuid = UUID.fromString("ee59391d-ede9-46ef-8d03-ef54125fbf86")
-    )
+    val user = TestData.loggedInUser(uuid = UUID.fromString("ee59391d-ede9-46ef-8d03-ef54125fbf86"))
     whenever(userSession.loggedInUserImmediate()) doReturn user
 
     // when
@@ -89,13 +87,15 @@ class DeepLinkEffectHandlerTest {
         uuid = patientUuid
     )
 
+    val user = TestData.loggedInUser(uuid = UUID.fromString("ee59391d-ede9-46ef-8d03-ef54125fbf86"))
+
     whenever(patientRepository.patientImmediate(patientUuid)) doReturn patient
 
     // when
-    testCase.dispatch(NavigateToPatientSummary(patientUuid))
+    testCase.dispatch(NavigateToPatientSummary(patientUuid, user))
 
     // then
-    verify(uiActions).navigateToPatientSummary(patientUuid)
+    verify(uiActions).navigateToPatientSummary(patientUuid, user)
     verifyNoMoreInteractions(uiActions)
 
     testCase.assertNoOutgoingEvents()
@@ -103,11 +103,14 @@ class DeepLinkEffectHandlerTest {
 
   @Test
   fun `when show patient does not exist effect is received, then show patient does not exist`() {
+    // given
+    val user = TestData.loggedInUser(uuid = UUID.fromString("ee59391d-ede9-46ef-8d03-ef54125fbf86"))
+
     // when
-    testCase.dispatch(ShowPatientDoesNotExist)
+    testCase.dispatch(ShowPatientDoesNotExist(user))
 
     // then
-    verify(uiActions).showPatientDoesNotExist()
+    verify(uiActions).showPatientDoesNotExist(user)
     verifyNoMoreInteractions(uiActions)
 
     testCase.assertNoOutgoingEvents()
@@ -115,11 +118,14 @@ class DeepLinkEffectHandlerTest {
 
   @Test
   fun `when show no patient uuid error effect is received, then show no patient uuid error`() {
+    // given
+    val user = TestData.loggedInUser(uuid = UUID.fromString("ee59391d-ede9-46ef-8d03-ef54125fbf86"))
+
     // when
-    testCase.dispatch(ShowNoPatientUuidError)
+    testCase.dispatch(ShowNoPatientUuidError(user))
 
     // then
-    verify(uiActions).showNoPatientUuidError()
+    verify(uiActions).showNoPatientUuidError(user)
     verifyNoMoreInteractions(uiActions)
 
     testCase.assertNoOutgoingEvents()

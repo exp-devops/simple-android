@@ -12,6 +12,7 @@ import org.simple.clinic.di.InjectorProviderContextWrapper
 import org.simple.clinic.main.TheActivity
 import org.simple.clinic.mobius.MobiusDelegate
 import org.simple.clinic.setup.SetupActivity
+import org.simple.clinic.user.User
 import org.simple.clinic.util.LocaleOverrideContextWrapper
 import org.simple.clinic.util.unsafeLazy
 import org.simple.clinic.util.wrap
@@ -93,20 +94,20 @@ class DeepLinkActivity : AppCompatActivity(), DeepLinkUiActions {
     finish()
   }
 
-  override fun navigateToPatientSummary(patientUuid: UUID) {
-    val intent = TheActivity.intentForOpenPatientSummary(this, patientUuid)
+  override fun navigateToPatientSummary(patientUuid: UUID, user: User) {
+    val intent = TheActivity.intentForOpenPatientSummary(context = this, patientUuid = patientUuid, user = user)
     startActivity(intent)
     finish()
   }
 
-  override fun showPatientDoesNotExist() {
-    val intent = TheActivity.intentForShowPatientNotFoundError(this)
+  override fun showPatientDoesNotExist(user: User) {
+    val intent = TheActivity.intentForShowPatientNotFoundError(context = this, user = user)
     startActivity(intent)
     finish()
   }
 
-  override fun showNoPatientUuidError() {
-    val intent = TheActivity.intentForShowNoPatientUuidError(this)
+  override fun showNoPatientUuidError(user: User) {
+    val intent = TheActivity.intentForShowNoPatientUuidError(context = this, user = user)
     startActivity(intent)
     finish()
   }
