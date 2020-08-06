@@ -42,6 +42,7 @@ import org.simple.clinic.summary.OpenIntention
 import org.simple.clinic.summary.PatientSummaryScreenKey
 import org.simple.clinic.sync.SyncSetup
 import org.simple.clinic.user.UnauthorizeUser
+import org.simple.clinic.user.User
 import org.simple.clinic.util.LocaleOverrideContextWrapper
 import org.simple.clinic.util.UtcClock
 import org.simple.clinic.util.unsafeLazy
@@ -55,29 +56,48 @@ class TheActivity : AppCompatActivity() {
 
   companion object {
     private const val EXTRA_DEEP_LINK_RESULT = "deep_link_result"
+    private const val EXTRA_CURRENT_USER_STATUS = "current_user_status"
 
-    fun newIntent(context: Context): Intent {
-      return Intent(context, TheActivity::class.java)
+    fun newIntent(
+        context: Context,
+        user: User? = null
+    ): Intent {
+      return Intent(context, TheActivity::class.java).apply {
+        putExtra(EXTRA_CURRENT_USER_STATUS, CurrentUserStatus.from(user))
+      }
     }
 
-    fun intentForOpenPatientSummary(context: Context, patientUuid: UUID): Intent {
+    fun intentForOpenPatientSummary(
+        context: Context,
+        patientUuid: UUID,
+        user: User? = null
+    ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         putExtra(EXTRA_DEEP_LINK_RESULT, OpenPatientSummary(patientUuid))
+        putExtra(EXTRA_CURRENT_USER_STATUS, CurrentUserStatus.from(user))
       }
     }
 
-    fun intentForShowPatientNotFoundError(context: Context): Intent {
+    fun intentForShowPatientNotFoundError(
+        context: Context,
+        user: User? = null
+    ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         putExtra(EXTRA_DEEP_LINK_RESULT, ShowPatientNotFound)
+        putExtra(EXTRA_CURRENT_USER_STATUS, CurrentUserStatus.from(user))
       }
     }
 
-    fun intentForShowNoPatientUuidError(context: Context): Intent {
+    fun intentForShowNoPatientUuidError(
+        context: Context,
+        user: User? = null
+    ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         putExtra(EXTRA_DEEP_LINK_RESULT, ShowNoPatientUuid)
+        putExtra(EXTRA_CURRENT_USER_STATUS, CurrentUserStatus.from(user))
       }
     }
 
