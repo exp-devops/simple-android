@@ -181,7 +181,7 @@ class SelectCountryScreen(
     // an event to the parent activity (maybe via the screen router's
     // event bus?) and handle the navigation there.
     // TODO(vs): 2019-11-07 Move this to an event that is subscribed in the parent activity
-    val intent = TheActivity.newIntent(activity).apply {
+    val intent = TheActivity.newIntent(context = activity, user = null).apply {
       flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
     }
     activity.startActivity(intent)

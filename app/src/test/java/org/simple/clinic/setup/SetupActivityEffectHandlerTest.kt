@@ -11,9 +11,9 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.After
 import org.junit.Test
+import org.simple.clinic.TestData
 import org.simple.clinic.appconfig.AppConfigRepository
 import org.simple.clinic.mobius.EffectHandlerTestCase
-import org.simple.clinic.TestData
 import org.simple.clinic.user.User
 import org.simple.clinic.util.Just
 import org.simple.clinic.util.scheduler.TrampolineSchedulersProvider
@@ -70,11 +70,12 @@ class SetupActivityEffectHandlerTest {
   @Test
   fun `when the go to main activity effect is received, the main activity must be opened`() {
     // when
-    testCase.dispatch(GoToMainActivity)
+    val user = TestData.loggedInUser(uuid = UUID.fromString("426d2eb9-ebf7-4a62-b157-1de221c7c3d0"))
+    testCase.dispatch(GoToMainActivity(user))
 
     // then
     testCase.assertNoOutgoingEvents()
-    verify(uiActions).goToMainActivity()
+    verify(uiActions).goToMainActivity(user)
     verifyNoMoreInteractions(uiActions)
   }
 

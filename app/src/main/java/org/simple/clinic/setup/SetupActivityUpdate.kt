@@ -24,7 +24,7 @@ class SetupActivityUpdate : Update<SetupActivityModel, SetupActivityEvent, Setup
         next(updatedModel, effect)
       }
       is DatabaseInitialized -> dispatch(FetchUserDetails)
-      is FallbackCountrySetAsSelected -> dispatch(GoToMainActivity)
+      is FallbackCountrySetAsSelected -> dispatch(GoToMainActivity(model.user!!))
       else -> noChange()
     }
   }
@@ -38,7 +38,7 @@ class SetupActivityUpdate : Update<SetupActivityModel, SetupActivityEvent, Setup
     val userPresentButCountryNotSelected = loggedInUser.isNotEmpty() && selectedCountry.isEmpty()
 
     return when {
-      hasUserLoggedInCompletely -> GoToMainActivity
+      hasUserLoggedInCompletely -> GoToMainActivity(loggedInUser.get())
       userPresentButCountryNotSelected -> SetFallbackCountryAsCurrentCountry
       hasUserCompletedOnboarding.not() -> ShowOnboardingScreen
       else -> ShowCountrySelectionScreen

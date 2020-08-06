@@ -71,7 +71,7 @@ class SetupActivityUpdateTest {
         .whenEvent(loggedInUserFetched(user, country))
         .then(assertThatNext(
             hasModel(expectedModel),
-            hasEffects(GoToMainActivity as SetupActivityEffect)
+            hasEffects(GoToMainActivity(user) as SetupActivityEffect)
         ))
   }
 
@@ -104,7 +104,7 @@ class SetupActivityUpdateTest {
         .whenEvent(FallbackCountrySetAsSelected)
         .then(assertThatNext(
             hasNoModel(),
-            hasEffects(GoToMainActivity as SetupActivityEffect)
+            hasEffects(GoToMainActivity(user) as SetupActivityEffect)
         ))
   }
 

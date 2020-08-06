@@ -33,7 +33,7 @@ class SetupActivityEffectHandler @AssistedInject constructor(
     return RxMobius
         .subtypeEffectHandler<SetupActivityEffect, SetupActivityEvent>()
         .addTransformer(FetchUserDetails::class.java, fetchUserDetails(schedulersProvider.io()))
-        .addAction(GoToMainActivity::class.java, uiActions::goToMainActivity, schedulersProvider.ui())
+        .addConsumer(GoToMainActivity::class.java, { uiActions.goToMainActivity(it.user) }, schedulersProvider.ui())
         .addAction(ShowOnboardingScreen::class.java, uiActions::showSplashScreen, schedulersProvider.ui())
         // We could technically also implicitly wait on the database to
         // initialize by querying the actual user data and make it a

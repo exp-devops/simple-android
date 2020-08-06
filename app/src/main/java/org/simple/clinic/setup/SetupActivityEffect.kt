@@ -1,10 +1,12 @@
 package org.simple.clinic.setup
 
+import org.simple.clinic.user.User
+
 sealed class SetupActivityEffect
 
 object FetchUserDetails : SetupActivityEffect()
 
-object GoToMainActivity : SetupActivityEffect()
+data class GoToMainActivity(val user: User) : SetupActivityEffect()
 
 object ShowOnboardingScreen : SetupActivityEffect()
 

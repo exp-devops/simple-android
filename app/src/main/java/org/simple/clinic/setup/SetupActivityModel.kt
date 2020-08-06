@@ -6,25 +6,20 @@ import org.simple.clinic.appconfig.Country
 import org.simple.clinic.user.User
 import org.simple.clinic.util.Optional
 import org.simple.clinic.util.isNotEmpty
+import org.simple.clinic.util.toNullable
 
 @Parcelize
 data class SetupActivityModel(
-    // I don't like using nullable booleans here, but if I were to add the User model as well, it
-    // would require me to make that Parcelable as well, which would then cascade down to many
-    // classes. Since for the purposes of this screen, all we need is whether a user is logged in
-    // and whether they have selected a country, I figured this is good enough for now until we
-    // find a better way.
-    // TODO(vs): 2019-11-08 Figure out a better way, maybe a separate UI parcelable model for the user?
-    val isUserLoggedIn: Boolean?,
+    val user: User?,
     val hasUserSelectedACountry: Boolean?
 ) : Parcelable {
 
   companion object {
-    val SETTING_UP = SetupActivityModel(isUserLoggedIn = null, hasUserSelectedACountry = null)
+    val SETTING_UP = SetupActivityModel(user = null, hasUserSelectedACountry = null)
   }
 
   fun withLoggedInUser(user: Optional<User>): SetupActivityModel {
-    return copy(isUserLoggedIn = user.isNotEmpty())
+    return copy(user = user.toNullable())
   }
 
   fun withSelectedCountry(country: Optional<Country>): SetupActivityModel {

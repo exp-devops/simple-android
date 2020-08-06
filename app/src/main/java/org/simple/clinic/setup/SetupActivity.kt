@@ -18,6 +18,7 @@ import org.simple.clinic.mobius.MobiusDelegate
 import org.simple.clinic.router.ScreenResultBus
 import org.simple.clinic.router.screen.ActivityPermissionResult
 import org.simple.clinic.router.screen.ActivityResult
+import org.simple.clinic.user.User
 import org.simple.clinic.util.LocaleOverrideContextWrapper
 import org.simple.clinic.util.unsafeLazy
 import org.simple.clinic.util.wrap
@@ -97,8 +98,8 @@ class SetupActivity : AppCompatActivity(), UiActions {
     screenResults.send(ActivityPermissionResult(requestCode))
   }
 
-  override fun goToMainActivity() {
-    val intent = TheActivity.newIntent(this).apply {
+  override fun goToMainActivity(user: User) {
+    val intent = TheActivity.newIntent(context = this, user = user).apply {
       flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION
     }
     startActivity(intent)

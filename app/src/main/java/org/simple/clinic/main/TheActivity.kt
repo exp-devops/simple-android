@@ -60,7 +60,7 @@ class TheActivity : AppCompatActivity() {
 
     fun newIntent(
         context: Context,
-        user: User? = null
+        user: User?
     ): Intent {
       return Intent(context, TheActivity::class.java).apply {
         putExtra(EXTRA_CURRENT_USER_STATUS, CurrentUserStatus.from(user))
